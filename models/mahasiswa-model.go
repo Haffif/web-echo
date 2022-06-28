@@ -47,3 +47,33 @@ func FetchAllMahasiswa() (Response, error) {
 
 	return res, nil
 }
+
+func StoreMahasiswa(nama string, alamat string, no_telepon string) (Response, error) {
+	var res Response
+	con := db.CreateCon()
+
+	sqlStatement := "INSERT mahasiswa (nama, alamat, no_telepon) VALUES (?,?,?)"
+
+	stmt, err := con.Prepare(sqlStatement)
+	if err != nil {
+		return res, err
+	}
+
+	result, err := stmt.Exec(nama, alamat, no_telepon)
+	if err != nil {
+		return res, err
+	}
+
+	lastInsertId, err := result.LastInsertId()
+	if err != nil {
+		return res, err
+	}
+
+	res.Status = http.StatusOK
+	res.Message = "Success"
+	res.Data = map[string]int64{
+		"last_inserted_id": lastInsertId,
+	}
+
+	return res, nil
+}
