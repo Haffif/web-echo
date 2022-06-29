@@ -107,3 +107,33 @@ func UpdateMahasiswa(id int, nama string, alamat string, no_telepon string) (Res
 
 	return res, nil
 }
+
+func DeleteMahasiswa(id int) (Response, error) {
+	var res Response
+	con := db.CreateCon()
+
+	sqlStatement := "DELETE FROM mahasiswa WHERE id = ?"
+
+	stmt, err := con.Prepare(sqlStatement)
+	if err != nil {
+		return res, err
+	}
+
+	result, err := stmt.Exec(id)
+	if err != nil {
+		return res, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return res, err
+	}
+
+	res.Status = http.StatusOK
+	res.Message = "Success"
+	res.Data = map[string]int64{
+		"rows_affected": rowsAffected,
+	}
+
+	return res, nil
+}

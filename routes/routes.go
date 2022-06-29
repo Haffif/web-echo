@@ -16,6 +16,7 @@ func Init() *echo.Echo {
 	e.GET("/mahasiswa", controllers.FetchAllMahasiswa)
 	e.POST("/inputMahasiswa", controllers.StoreMahasiswa)
 	e.PUT("/editMahasiswa", controllers.UpdateMahasiswa)
+	e.DELETE("/deleteMahasiswa", controllers.DeleteMahasiswa)
 
 	return e
 }
